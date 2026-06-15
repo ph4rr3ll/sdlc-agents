@@ -37,7 +37,7 @@ const { spawnSync, execSync } = require('child_process');
 // ===========================================================================
 // Конфигурация по умолчанию — замени на URL своего репо команды перед публикацией.
 // ===========================================================================
-const DEFAULT_REPO_URL = process.env.AGENTS_REPO_URL || 'https://gitlab.example.com/agents/team.git';
+const DEFAULT_REPO_URL = process.env.AGENTS_REPO_URL || 'https://github.com/ph4rr3ll/sdlc-agents.git';
 const DEFAULT_REF = process.env.AGENTS_REPO_REF || 'main';
 
 // ===========================================================================
