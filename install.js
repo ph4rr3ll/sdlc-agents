@@ -37,7 +37,7 @@ const { spawnSync, execSync } = require('child_process');
 // ===========================================================================
 // Конфигурация по умолчанию — замени на URL своего репо команды перед публикацией.
 // ===========================================================================
-const DEFAULT_REPO_URL = process.env.AGENTS_REPO_URL || 'https://github.com/ph4rr3ll/sdlc-agents.git';
+const DEFAULT_REPO_URL = process.env.AGENTS_REPO_URL || const DEFAULT_REPO_URL = process.env.AGENTS_REPO_URL || 'https://github.com/ph4rr3ll/sdlc-agents.git';
 const DEFAULT_REF = process.env.AGENTS_REPO_REF || 'main';
 
 // ===========================================================================
@@ -53,14 +53,12 @@ const TOOL_ITEMS = {
   codex:  { label: 'OpenAI Codex CLI', paths: [] },                   // использует AGENTS.md из core
 };
 
-const DOCS_ITEMS = ['HUMAN-GATES.md', 'LOCAL-TESTING.md', 'integrations'];
 const EXAMPLE_ITEMS = ['.agent_space/EXAMPLE-001'];
 
 const ALL_POSSIBLE = [
   ...CORE_ITEMS,
   ...EMPTY_DIRS,
   '.claude/agents', '.kilo/agents', 'kilo.jsonc',
-  ...DOCS_ITEMS,
 ];
 
 const PROJECT_MARKERS = [
@@ -99,7 +97,6 @@ function parseArgs(argv) {
     target: '.',
     yes: false,
     tool: null,
-    docs: false,
     example: false,
     force: false,
     repo: DEFAULT_REPO_URL,
@@ -121,7 +118,6 @@ function parseArgs(argv) {
     const a = argv[i];
     if (a === '--help' || a === '-h') args.help = true;
     else if (a === '--yes' || a === '-y') args.yes = true;
-    else if (a === '--docs') args.docs = true;
     else if (a === '--example') args.example = true;
     else if (a === '--force') args.force = true;
     else if (a.startsWith('--tool=')) args.tool = a.slice(7);
@@ -155,7 +151,6 @@ function printHelp() {
   --ref <branch/tag>      ветка или тег (по умолчанию: AGENTS_REPO_REF или 'main')
   --token <PAT>           personal access token для приватных репо
   --tool <name>           claude | kilo | qwen | codex | all (обязательно с --yes)
-  --docs                  включить документацию (HUMAN-GATES, LOCAL-TESTING, integrations/)
   --example               включить эталонный пример EXAMPLE-001
   --force                 перезаписывать существующие артефакты без подтверждения
   --yes, -y               не задавать вопросов
@@ -167,7 +162,7 @@ function printHelp() {
   AGENTS_TOKEN            токен (приоритет выше, чем GITLAB_TOKEN/GITHUB_TOKEN)
 
 Дистрибуция:
-  curl -fsSL <RAW_URL>/install.js | node - --yes --tool kilo --docs --example
+  curl -fsSL <RAW_URL>/install.js | node - --yes --tool kilo --example
 `);
 }
 
@@ -411,14 +406,13 @@ function ensureEmptyDirs(target) {
   for (const d of EMPTY_DIRS) fs.mkdirSync(path.join(target, d), { recursive: true });
 }
 
-function makePlan(tools, includeDocs, includeExample) {
+function makePlan(tools, includeExample) {
   const seen = new Set();
   const items = [];
   const push = (it) => { if (!seen.has(it)) { seen.add(it); items.push(it); } };
 
   CORE_ITEMS.forEach(push);
   for (const t of tools) TOOL_ITEMS[t].paths.forEach(push);
-  if (includeDocs) DOCS_ITEMS.forEach(push);
   if (includeExample) EXAMPLE_ITEMS.forEach(push);
   return items;
 }
@@ -460,10 +454,9 @@ function printNextSteps(tools, target) {
   }
 
   console.log(bold('Документация в установленной директории:'));
-  console.log('  • AGENTS.md — universal entry point');
-  if (fs.existsSync(path.join(target, 'HUMAN-GATES.md'))) console.log('  • HUMAN-GATES.md — настройка ручных подтверждений переходов');
-  if (fs.existsSync(path.join(target, 'LOCAL-TESTING.md'))) console.log('  • LOCAL-TESTING.md — памятка под локальные модели');
-  if (fs.existsSync(path.join(target, 'integrations'))) console.log('  • integrations/*.md — детали по каждому инструменту');
+  console.log('  • AGENTS.md — universal entry point для агентских инструментов');
+  console.log();
+  console.log(dim('  Подробная документация (HUMAN-GATES, LOCAL-TESTING, integrations/*) — в репо команды.'));
   console.log();
 }
 
@@ -537,18 +530,16 @@ async function main() {
     }
 
     // Extras
-    let includeDocs, includeExample;
+    let includeExample;
     if (args.yes) {
-      includeDocs = args.docs;
       includeExample = args.example;
     } else {
       console.log();
-      includeDocs = await confirm(rl, 'Установить документацию (HUMAN-GATES, LOCAL-TESTING, integrations/)?', 'y');
       includeExample = await confirm(rl, 'Установить эталонный пример EXAMPLE-001?', 'y');
     }
 
     // План
-    const items = makePlan(tools, includeDocs, includeExample);
+    const items = makePlan(tools, includeExample);
     console.log();
     console.log(bold('Будет установлено (после клонирования source):'));
     for (const it of items) console.log(`  + ${it}`);
