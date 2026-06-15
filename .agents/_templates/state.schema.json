@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agents.local/schemas/state.schema.json",
+  "title": "Agent Task State",
+  "description": "Состояние мультиагентной задачи. Хранится в .agent_space/[TASK_ID]/STATE.json.",
+  "type": "object",
+  "required": [
+    "task_id",
+    "title",
+    "current_stage",
+    "active_agent",
+    "created_at",
+    "updated_at",
+    "history"
+  ],
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "description": "Уникальный идентификатор задачи. Формат: TASK-YYYYMMDD-NNN или пользовательский."
+    },
+    "title": {
+      "type": "string",
+      "description": "Короткое название задачи (до 100 символов)."
+    },
+    "description": {
+      "type": "string",
+      "description": "Исходное описание задачи от пользователя (raw)."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "current_stage": {
+      "enum": [
+        "INIT",
+        "SHAPING",
+        "CODING",
+        "REVIEW",
+        "TESTING",
+        "DONE",
+        "BLOCKED"
+      ]
+    },
+    "active_agent": {
+      "type": "string",
+      "description": "agent_id того, кто сейчас держит ход. 'manager' — между делегированиями."
+    },
+    "tech_stacks": {
+      "type": "array",
+      "description": "Идентификаторы стек-файлов из .agents/stacks/, релевантных задаче.",
+      "items": { "type": "string" }
+    },
+    "history": {
+      "type": "array",
+      "description": "Журнал переходов. Append-only. Используется для аудита и восстановления.",
+      "items": {
+        "type": "object",
+        "required": ["step", "timestamp", "from_agent", "to_agent", "stage", "summary"],
+        "properties": {
+          "step": { "type": "integer", "minimum": 0 },
+          "timestamp": { "type": "string", "format": "date-time" },
+          "from_agent": { "type": "string" },
+          "to_agent": { "type": "string" },
+          "stage": { "type": "string" },
+          "summary": { "type": "string", "description": "1-3 предложения о том, что произошло на этом шаге." },
+          "brief_path": { "type": "string", "description": "Путь к брифу (если File mode)." },
+          "report_path": { "type": "string", "description": "Путь к handoff-отчёту (если File mode)." },
+          "artifacts": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "artifacts": {
+      "type": "object",
+      "description": "Карта артефактов: логическое имя → путь относительно WORKSPACE.",
+      "additionalProperties": { "type": "string" }
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["raised_at", "raised_by", "description"],
+        "properties": {
+          "raised_at": { "type": "string", "format": "date-time" },
+          "raised_by": { "type": "string" },
+          "description": { "type": "string" },
+          "resolved": { "type": "boolean", "default": false },
+          "resolved_at": { "type": "string", "format": "date-time" }
+        }
+      }
+    }
+  }
+}

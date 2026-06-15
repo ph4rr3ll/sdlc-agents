@@ -1,0 +1,46 @@
+# Human-in-the-loop gates configuration.
+#
+# Менеджер читает этот файл в SYNTHESIS_PROTOCOL и останавливается на тех
+# переходах STATE.json.current_stage, где gate помечен как required.
+#
+# Документация: см. HUMAN-GATES.md в корне репозитория.
+
+# Главный выключатель. Если false — gates отключены полностью.
+# Полезно для отлаженного пайплайна.
+enabled: true
+
+# Поведение по умолчанию для переходов, явно не перечисленных в `transitions`.
+# Допустимо: required | skip
+default: required
+
+# Per-transition control.
+# Ключ — "FROM_STAGE → TO_STAGE" (стрелка U+2192).
+# Значение — required | skip.
+transitions:
+  "INIT → SHAPING": required
+  "SHAPING → CODING": required
+  "CODING → REVIEW": required
+  "REVIEW → CODING": required        # rework — обязательно человек смотрит findings
+  "REVIEW → TESTING": required
+  "TESTING → CODING": required       # failed QA — назад к coder
+  "TESTING → DONE": required
+  # Особые переходы: всегда required, не отключаются default'ом.
+  "* → BLOCKED": required
+
+# Переопределения. Если запись здесь — gate ПРОПУСКАЕТСЯ, даже если в
+# `transitions` указано required. Используется как «доверенные» переходы.
+skip_overrides: []
+
+# Ключевые слова, которые менеджер интерпретирует как одобрение.
+# Регистронезависимо. Любой иной ответ пользователя — запрос исправлений
+# или blocker (менеджер сам интерпретирует).
+approval_keywords:
+  - "ok"
+  - "go"
+  - "approve"
+  - "approved"
+  - "yes"
+  - "да"
+  - "погнали"
+  - "одобряю"
+  - "lgtm"

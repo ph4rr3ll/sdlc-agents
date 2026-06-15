@@ -1,0 +1,111 @@
+{
+  "task_id": "EXAMPLE-001",
+  "title": "Добавить эндпоинт /healthz",
+  "description": "Эндпоинт для k8s liveness/readiness проб: возвращает статус сервиса, состояние БД и версию приложения.",
+  "created_at": "2026-06-13T10:00:00Z",
+  "updated_at": "2026-06-13T12:45:00Z",
+  "current_stage": "DONE",
+  "active_agent": "manager",
+  "tech_stacks": ["backend_python_django"],
+  "history": [
+    {
+      "step": 0,
+      "timestamp": "2026-06-13T10:00:00Z",
+      "from_agent": "user",
+      "to_agent": "manager",
+      "stage": "INIT",
+      "summary": "Получена задача: эндпоинт /healthz для k8s liveness/readiness проб."
+    },
+    {
+      "step": 1,
+      "timestamp": "2026-06-13T10:02:00Z",
+      "from_agent": "manager",
+      "to_agent": "shaper",
+      "stage": "SHAPING",
+      "summary": "Делегирован shaping: требования + архитектура + декомпозиция в один проход.",
+      "brief_path": "handoffs/01_shaper_brief.md"
+    },
+    {
+      "step": 2,
+      "timestamp": "2026-06-13T10:35:00Z",
+      "from_agent": "shaper",
+      "to_agent": "manager",
+      "stage": "SHAPING",
+      "summary": "Shaping выполнен: 2 US, 4 AC, 3 NFR, 2 ADR, 1 атомарная задача для coder_backend. Стек: backend_python_django.",
+      "report_path": "handoffs/02_shaper_report.md",
+      "artifacts": ["artifacts/REQUIREMENTS.md", "artifacts/ARCH_PLAN.md", "artifacts/TASKS.md"]
+    },
+    {
+      "step": 3,
+      "timestamp": "2026-06-13T10:40:00Z",
+      "from_agent": "manager",
+      "to_agent": "coder_backend",
+      "stage": "CODING",
+      "summary": "Делегирована реализация T-01.",
+      "brief_path": "handoffs/03_coder_backend_brief.md"
+    },
+    {
+      "step": 4,
+      "timestamp": "2026-06-13T11:30:00Z",
+      "from_agent": "coder_backend",
+      "to_agent": "manager",
+      "stage": "CODING",
+      "summary": "T-01 реализована: 5 файлов изменено, 5 тестов добавлено, pytest/ruff/mypy зелёные.",
+      "report_path": "handoffs/04_coder_backend_report.md",
+      "artifacts": ["artifacts/IMPL_NOTES_T-01.md"]
+    },
+    {
+      "step": 5,
+      "timestamp": "2026-06-13T11:32:00Z",
+      "from_agent": "manager",
+      "to_agent": "reviewer",
+      "stage": "REVIEW",
+      "summary": "Делегировано ревью T-01."
+    },
+    {
+      "step": 6,
+      "timestamp": "2026-06-13T11:55:00Z",
+      "from_agent": "reviewer",
+      "to_agent": "manager",
+      "stage": "REVIEW",
+      "summary": "Вердикт APPROVED. 1 MINOR (логирование) + 1 NIT (статичная версия) — не блокируют.",
+      "report_path": "handoffs/06_reviewer_report.md",
+      "artifacts": ["artifacts/REVIEW_T-01.md"]
+    },
+    {
+      "step": 7,
+      "timestamp": "2026-06-13T11:57:00Z",
+      "from_agent": "manager",
+      "to_agent": "qa",
+      "stage": "TESTING",
+      "summary": "Делегировано QA-тестирование."
+    },
+    {
+      "step": 8,
+      "timestamp": "2026-06-13T12:40:00Z",
+      "from_agent": "qa",
+      "to_agent": "manager",
+      "stage": "TESTING",
+      "summary": "Вердикт PASS_WITH_OBSERVATIONS. Все 4 AC покрыты, 2 edge-case теста добавлены. NFR-03 требует подтверждения на проде.",
+      "report_path": "handoffs/08_qa_report.md",
+      "artifacts": ["artifacts/QA_REPORT.md"]
+    },
+    {
+      "step": 9,
+      "timestamp": "2026-06-13T12:45:00Z",
+      "from_agent": "manager",
+      "to_agent": "user",
+      "stage": "DONE",
+      "summary": "Задача завершена. Эндпоинт /healthz реализован, протестирован."
+    }
+  ],
+  "artifacts": {
+    "requirements": "artifacts/REQUIREMENTS.md",
+    "arch_plan": "artifacts/ARCH_PLAN.md",
+    "tasks": "artifacts/TASKS.md",
+    "impl_notes_T01": "artifacts/IMPL_NOTES_T-01.md",
+    "review_T01": "artifacts/REVIEW_T-01.md",
+    "qa_report": "artifacts/QA_REPORT.md"
+  },
+  "blockers": []
+}
