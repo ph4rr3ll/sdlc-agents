@@ -2,12 +2,13 @@
   // JSON Schema для автокомплита в VS Code
   "$schema": "https://app.kilo.ai/config.json",
 
-  // Подключаем все агенты команды.
-  // Каждый файл — тонкий wrapper, читающий полный манифест из .agents/
-  "agents": [".kilo/agents/*.md"],
-
   // Дефолтные workspace permissions.
   // Per-agent permissions в .kilo/agents/<name>.md точнее и приоритетнее.
+  //
+  // Заметка по схеме v7.3+:
+  // Агенты из .kilo/agents/*.md обнаруживаются автоматически — отдельный ключ
+  // не нужен. Корневой ключ `agent` в kilo.jsonc — для INLINE конфигурации
+  // встроенных агентов (plan/build/general/etc), не для наших wrapper'ов.
   "permission": {
     "read": "allow",
     "edit": {
@@ -15,7 +16,6 @@
       "*": "ask"
     },
     "bash": "ask",
-    "webfetch": "deny",
-    "websearch": "deny"
+    "webfetch": "deny"
   }
 }
