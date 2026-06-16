@@ -12,7 +12,7 @@
 user → manager
         ├→ shaper         → REQUIREMENTS.md + ARCH_PLAN.md + TASKS.md (в один проход)
         ├→ coder_backend  → код + IMPL_NOTES_T-01.md
-        ├→ reviewer       → REVIEW_T-01.md  (APPROVED, 1 MINOR + 1 NIT)
+        ├→ reviewer       → REVIEW_T-01.md  (APPROVED, 1 MINOR)
         └→ qa             → QA_REPORT.md  (PASS_WITH_OBSERVATIONS)
                           → DONE
 ```

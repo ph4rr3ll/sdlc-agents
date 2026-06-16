@@ -68,7 +68,7 @@
       "from_agent": "reviewer",
       "to_agent": "manager",
       "stage": "REVIEW",
-      "summary": "Вердикт APPROVED. 1 MINOR (логирование) + 1 NIT (статичная версия) — не блокируют.",
+      "summary": "Вердикт APPROVED. 1 MINOR (логирование) — не блокирует, передаётся пользователю.",
       "report_path": "handoffs/06_reviewer_report.md",
       "artifacts": ["artifacts/REVIEW_T-01.md"]
     },

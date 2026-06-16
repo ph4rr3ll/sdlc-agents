@@ -1,7 +1,7 @@
 # HANDOFF: reviewer → manager  (step 06)
 
 ## SUMMARY
-Дифф T-01 прошёл review. Вердикт **APPROVED**. Реализация соответствует `ARCH_PLAN.md`, все 7 пунктов DoD выполнены, все 4 AC покрыты адекватными (не фиктивными) тестами. Найден 1 MINOR-комментарий по логированию exception в view и 1 NIT по статичности версии — оба не блокируют. Out-of-scope изменений нет — два out-of-scope **observation'а** из IMPL_NOTES корректно идентифицированы разработчиком, не пофиксены.
+Дифф T-01 прошёл review. Вердикт **APPROVED**. Реализация соответствует `ARCH_PLAN.md`, все 7 пунктов DoD выполнены, все 4 AC покрыты адекватными (не фиктивными) тестами. Найден 1 MINOR-комментарий по логированию exception в view — не блокирует (MINOR не возвращается в coder, передаётся пользователю как информация). Out-of-scope изменений нет — два out-of-scope **observation'а** из IMPL_NOTES корректно идентифицированы разработчиком, не пофиксены.
 
 ## ARTIFACTS
 - `artifacts/REVIEW_T-01.md` — полный review с findings по severity и финальным вердиктом.
@@ -48,7 +48,7 @@
     "from_agent": "reviewer",
     "to_agent": "manager",
     "stage": "REVIEW",
-    "summary": "Вердикт APPROVED. 1 MINOR + 1 NIT, не блокируют.",
+    "summary": "Вердикт APPROVED. 1 MINOR (логирование), не блокирует — передаётся пользователю.",
     "report_path": "handoffs/06_reviewer_report.md",
     "artifacts": ["artifacts/REVIEW_T-01.md"]
   }

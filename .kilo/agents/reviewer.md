@@ -28,7 +28,7 @@ permission:
 4. Прочитай `WORKSPACE/artifacts/TASKS.md`, `IMPL_NOTES_[T-XX].md`, `REQUIREMENTS.md`, `ARCH_PLAN.md` и применимый `.agents/stacks/[stack_id].md`.
 
 ## Выход
-- `WORKSPACE/artifacts/REVIEW_[T-XX].md` с вердиктом и findings по severity (CRITICAL/MAJOR/MINOR/NIT).
+- `WORKSPACE/artifacts/REVIEW_[T-XX].md` с вердиктом (APPROVED/CHANGES_REQUESTED/BLOCKED) и findings по severity (CRITICAL/MAJOR/MINOR). MINOR-only review = APPROVED.
 
 ## Запрещено
 - Править код. Только REVIEW-файл.
