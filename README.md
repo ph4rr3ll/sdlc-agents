@@ -105,7 +105,7 @@ TESTING    │
 DONE
 ```
 
-`devops` подключается параллельно с `coder_*` в той же wave, если в `TASKS.md` от shaper есть задачи с `Assignee: devops`.
+`devops` подключается **последовательно** в общей цепочке `Execution Order`, если в `TASKS.md` от shaper есть задачи с `Assignee: devops`. Параллелизм в текущей конфигурации не используется.
 
 Цикл `REVIEW ⇄ CODING` возможен при `CHANGES_REQUESTED`; `TESTING → CODING` — при провале QA. `BLOCKED` — любой агент может вернуть, тогда менеджер останавливается и обращается к пользователю.
 
